@@ -1,13 +1,63 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+* {
+  margin: 0px;
+  padding: 0px;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+#repo > .card-header,
+#repo > .card-body,
+#repo > .card-footer {
+  background-color: #ededed;
+  border: 0px;
+}
+
+#repo > .card-body {
+  height: 7rem;
+}
+
+#repo > .card-body > .card-text {
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4; /* number of lines to show */
+  display: -webkit-box;
+  line-clamp: 4; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#repo > .card-body .card-text {
+  height: 100%;
+}
+
+#repo .card-footer .member {
+  background-color: #fff;
+  border-radius: 25em;
+  display: block;
+  border: 0;
+  float: left;
+  height: 28px;
+  margin: 0 0 0 -2px;
+  overflow: visible;
+  width: 28px;
+}
+
+#repo .card-footer .member-avatar {
+  border-radius: 25em;
+  border: 0;
+  height: 28px;
+  height: 28px;
+}
+
+#repo .card-footer .member-count {
+  background-color: aliceblue;
+  border-radius: 14px;
+  border: 0;
+  display: block;
+  font-size: 12px;
+  height: 28px;
+  line-height: 28px;
+  margin-left: -2px;
+  overflow: hidden;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  width: 28px;
 }
