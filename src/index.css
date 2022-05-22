@@ -61,3 +61,12 @@
   text-decoration: none;
   width: 28px;
 }
+
+#popover {
+  position: absolute;
+  border: solid 1px red;
+  left: 115px;
+  bottom: 33px;
+  padding: 1em;
+  padding-left: calc(1em + 2px);
+}

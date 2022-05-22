@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import login from '../services/login';
-import reposService from '../services/repos';
 
 function Login({ setSuccess }) {
   const [token, setToken] = useState('');
@@ -8,15 +7,15 @@ function Login({ setSuccess }) {
 
   // Leer el localStorage
   useEffect(() => {
-    console.log('Cargando cookies');
+    console.log('Buscando cookies');
     const loggedUserJSON = window.localStorage.getItem('LoggedNoteAppUser');
 
     if (loggedUserJSON) {
       const auth = JSON.parse(loggedUserJSON);
       setUser(auth.username);
       setToken(auth.token);
+      login.setAuth(auth);
       setSuccess(true);
-      reposService.setAuth(auth);
     }
   }, [setSuccess]);
 
@@ -29,22 +28,19 @@ function Login({ setSuccess }) {
     };
 
     try {
-      const response = await login(auth);
+      const response = await login.getLogin(auth);
+      console.log('Login correcto', response.status);
 
       window.localStorage.setItem(
         'LoggedNoteAppUser',
         JSON.stringify(auth),
       );
-      console.log('Login correcto', response.status);
 
-      reposService.setAuth(auth);
+      login.setAuth(auth);
       setSuccess(true);
-      setToken('');
     } catch (error) {
-      alert('Credenciales invalidas');
       console.error(error);
     }
-    // setToken('')
   };
 
   return (

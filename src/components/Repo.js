@@ -1,22 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import Popover from './Popover';
 import getColor from '../helpers/color';
-import reposService from '../services/repos';
+import useAxios from '../hooks/useAxios';
 
-function Repo({ dataRepo }) {
-  const [collaborators, setCollaborators] = useState([]);
+function Repo({ dataRepo, popover, setPopover }) {
+  const {
+    response: collaborators,
+    loading,
+  } = useAxios(`/repos/${dataRepo.full_name}/collaborators`);
 
-  useEffect(() => {
-    async function getData() {
-      const url = dataRepo.collaborators_url.replace(/\{\/\w+\}/, '');
-      const { data } = await reposService.getCollaborators(url);
-      console.log(data);
-      setCollaborators(data);
-    }
-    getData();
-  }, [dataRepo]);
-
-  function showData(leftUsers) {
-    console.log(leftUsers);
+  function showData() {
+    setPopover(dataRepo.id);
   }
 
   return (
@@ -35,31 +29,39 @@ function Repo({ dataRepo }) {
           </p>
         </div>
         <div className="card-footer d-flex justify-content-between align-items-center">
-          <div className="d-flex align-items-center">
-            <div className="members">
-              {collaborators.slice(0, 3).map((c) => (
-                <button className="member" type="button" key={c.id}>
-                  <img
-                    className="member-avatar"
-                    title={c.login}
-                    alt="Avatar"
-                    // key={c.id}
-                    src={c.avatar_url}
-                  />
+          {loading ? (
+            <span>Loading</span>
+          ) : (
+            <div className="d-flex align-items-center">
+              <div className="members">
+                {collaborators.slice(0, 3).map((c) => (
+                  <a className="member" href={c.html_url} key={c.id} target="_blank" rel="noopener noreferrer">
+                    <img
+                      className="member-avatar"
+                      title={c.login}
+                      alt="Avatar"
+                      src={c.avatar_url}
+                    />
+                  </a>
+                ))}
+              </div>
+              {collaborators.length > 3 && (
+                <button
+                  className="member-count"
+                  type="button"
+                  onClick={() => showData()}
+                >
+                  {`+${collaborators.length - 3}`}
                 </button>
-              ))}
+              )}
+              {popover === dataRepo.id && (
+                <Popover collaborators={collaborators} setPopover={setPopover} />
+              )}
             </div>
-            {collaborators.length > 3 && (
-              <button
-                className="member-count"
-                type="button"
-                onClick={() => showData(collaborators.slice(3, collaborators.length))}
-              >
-                {`+${collaborators.length - 3}`}
-              </button>
-            )}
-          </div>
-          <a href={dataRepo.html_url} className="float-end btn btn-outline-primary">Go to</a>
+          )}
+          <a href={dataRepo.html_url} className="float-end btn btn-outline-primary" target="_blank" rel="noopener noreferrer">
+            Go to
+          </a>
         </div>
       </div>
     </div>
